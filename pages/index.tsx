@@ -3,12 +3,7 @@ import styled from 'styled-components';
 import { palette } from 'common/styles';
 
 export const index = () => {
-
-	return (
-		<Div>
-			hello, world
-		</Div>
-	);
+	return <Div>hello, world</Div>;
 };
 
 export default index;
@@ -20,5 +15,5 @@ export const Div = styled.div`
 	height: 100vh;
 	justify-content: center;
 	align-items: center;
-	background-color: black;
+	background-color: white;
 `;

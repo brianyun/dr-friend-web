@@ -3,6 +3,7 @@ export const brand = {
 	light: '#ADB1B5',
 	main: '#F04C4C',
 	dark: '#242526',
+	black: '#101010',
 	primary: '#0057FF',
 };
 

@@ -7,9 +7,24 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ childComponent }) => {
-	return <Div>{childComponent}</Div>;
+	return (
+		<Wrapper>
+			<Div>{childComponent}</Div>
+		</Wrapper>
+	);
 };
 
+const Wrapper = styled.div`
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	background-color: #fafafa;
+	height: 100vh;
+	width: 100vw;
+
+	overflow-x: hidden;
+	overflow-y: hidden;
+`;
 const Div = styled.div`
 	display: flex;
 	position: relative;
