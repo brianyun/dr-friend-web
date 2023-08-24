@@ -3,7 +3,18 @@ export const brand = {
 	light: '#ADB1B5',
 	main: '#F04C4C',
 	dark: '#242526',
-	primary: '#753BBD',
+	primary: '#0057FF',
+};
+
+export const neutral = {
+	'800': '#170F49',
+	'700': '#514F6E',
+	'600': '#6F6C90',
+	'500': '#A0A3BD',
+	'400': '#D9DBE9',
+	'300': '#EFF0F6',
+	'200': '#F7F7FB',
+	'100': '#FFFFFF',
 };
 
 export const red = {
