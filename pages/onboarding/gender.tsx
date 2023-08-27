@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { BottomButton, palette } from 'common/styles';
+import { palette } from 'common/styles';
 import {
 	OnboardingHeaderContainer,
 	OnboardingProgressBar,

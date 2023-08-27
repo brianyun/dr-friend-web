@@ -21,16 +21,19 @@ export const OnboardingSubmitContainer: React.FC<Props> = ({
 			<OnboardingSubmitButton
 				isActive={isActive}
 				onClick={() => router.push(`/${nextButtonDestination}`)}
+				disabled={!isActive}
 			>
 				<p>다음</p>
 				<img src={'/onboarding_next.svg'} alt="" />
 			</OnboardingSubmitButton>
-			<SkipButton
-				isSkipVisible={isSkipVisible}
-				onClick={() => router.push(`/${nextButtonDestination}`)}
-			>
-				건너뛰기
-			</SkipButton>
+			<SkipButtonContainer>
+				<SkipButton
+					isSkipVisible={isSkipVisible}
+					onClick={() => router.push(`/${nextButtonDestination}`)}
+				>
+					건너뛰기
+				</SkipButton>
+			</SkipButtonContainer>
 		</Div>
 	);
 };
@@ -72,6 +75,15 @@ const OnboardingSubmitButton = styled.button<{ isActive: boolean }>`
 		height: 1rem;
 	}
 `;
+const SkipButtonContainer = styled.div`
+	display: flex;
+	width: calc(100% - 2.5rem);
+	margin: 12px auto;
+	padding: 9px 0;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+`;
 const SkipButton = styled.button<{ isSkipVisible: boolean }>`
 	display: ${(props) => (props.isSkipVisible ? 'flex' : 'none')};
 	color: #79828a;
@@ -79,4 +91,10 @@ const SkipButton = styled.button<{ isSkipVisible: boolean }>`
 	font-size: 15px;
 	font-weight: 700;
 	text-decoration-line: underline;
+
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	outline: none;
+	width: auto;
 `;
