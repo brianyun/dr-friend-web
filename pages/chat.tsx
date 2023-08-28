@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { palette } from 'common/styles';
 import { ChatOnboarding } from 'components/chat';
 
-export const chat = () => {
+const chat = () => {
 	const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -15,8 +15,16 @@ export const chat = () => {
 		}
 	}, []);
 
-	return <Div>{showOnboarding && <ChatOnboarding />}</Div>;
+	return (
+		<Div>
+			{showOnboarding && (
+				<ChatOnboarding handleClick={() => setShowOnboarding(false)} />
+			)}
+		</Div>
+	);
 };
+
+export default chat;
 
 const Div = styled.div`
 	display: flex;
