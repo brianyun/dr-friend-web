@@ -2,35 +2,47 @@ import React from 'react';
 import styled from 'styled-components';
 import { palette } from 'common/styles';
 import { useRouter } from 'next/router';
+import { isBottomsheetVisibleState } from 'recoil/atoms';
+import { useRecoilState } from 'recoil';
 
 type Props = {
 	isSkipVisible?: boolean;
 	isActive?: boolean;
 	nextButtonDestination?: string;
+	isTriggerBottomsheet?: boolean;
 };
 
 export const OnboardingSubmitContainer: React.FC<Props> = ({
 	isSkipVisible,
 	isActive,
 	nextButtonDestination,
+	isTriggerBottomsheet = false,
 }) => {
 	const router = useRouter();
+	const [isBottomsheetVisible, setIsBottomsheetVisible] = useRecoilState(
+		isBottomsheetVisibleState
+	);
+
+	const handleNext = () => {
+		if (isTriggerBottomsheet) {
+			setIsBottomsheetVisible(true);
+		} else {
+			router.push(`/${nextButtonDestination}`);
+		}
+	};
 
 	return (
 		<Div>
 			<OnboardingSubmitButton
 				isActive={isActive}
-				onClick={() => router.push(`/${nextButtonDestination}`)}
+				onClick={handleNext}
 				disabled={!isActive}
 			>
 				<p>다음</p>
 				<img src={'/onboarding_next.svg'} alt="" />
 			</OnboardingSubmitButton>
 			<SkipButtonContainer>
-				<SkipButton
-					isSkipVisible={isSkipVisible}
-					onClick={() => router.push(`/${nextButtonDestination}`)}
-				>
+				<SkipButton isSkipVisible={isSkipVisible} onClick={handleNext}>
 					건너뛰기
 				</SkipButton>
 			</SkipButtonContainer>
