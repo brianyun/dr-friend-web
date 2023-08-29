@@ -46,6 +46,10 @@ const Div = styled.div`
 	flex-direction: column;
 	width: 100%;
 	height: 100%;
+	z-index: 1000;
+	position: absolute;
+	top: 0;
+	left: 0;
 `;
 const OnboardingContainer = styled.div`
 	display: flex;

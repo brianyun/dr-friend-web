@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { palette } from 'common/styles';
-import { ChatOnboarding } from 'components/chat';
+import { ChatHeader, ChatOnboarding } from 'components/chat';
 
 const chat = () => {
 	const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
@@ -11,8 +11,14 @@ const chat = () => {
 		if (isOnboarded) {
 			setShowOnboarding(false);
 		} else {
-			setShowOnboarding(true);
+			// 디버깅 목적으로 숨김
+			// setShowOnboarding(true);
+			setShowOnboarding(false);
 		}
+	}, []);
+
+	const handleNewChat = useCallback(() => {
+		console.log('handleNewChat');
 	}, []);
 
 	return (
@@ -20,6 +26,7 @@ const chat = () => {
 			{showOnboarding && (
 				<ChatOnboarding handleClick={() => setShowOnboarding(false)} />
 			)}
+			<ChatHeader handleNewChat={handleNewChat} />
 		</Div>
 	);
 };
@@ -29,6 +36,9 @@ export default chat;
 const Div = styled.div`
 	display: flex;
 	flex-direction: column;
+	position: relative;
 	width: 100%;
 	height: 100%;
+	justify-content: center;
+	align-items: center;
 `;
