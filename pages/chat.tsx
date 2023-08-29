@@ -1,7 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { palette } from 'common/styles';
-import { ChatHeader, ChatOnboarding } from 'components/chat';
+import {
+	ChatHeader,
+	ChatInputView,
+	ChatOnboarding,
+	DefaultGreetingMessage,
+} from 'components/chat';
 
 const chat = () => {
 	const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
@@ -21,12 +26,19 @@ const chat = () => {
 		console.log('handleNewChat');
 	}, []);
 
+	const handleSubmit = useCallback((value: string) => {
+		console.log('handleSubmit', value);
+	}, []);
+
 	return (
 		<Div>
 			{showOnboarding && (
 				<ChatOnboarding handleClick={() => setShowOnboarding(false)} />
 			)}
 			<ChatHeader handleNewChat={handleNewChat} />
+			<Spacer />
+			<DefaultGreetingMessage />
+			<ChatInputView handleSubmit={handleSubmit} />
 		</Div>
 	);
 };
@@ -41,4 +53,9 @@ const Div = styled.div`
 	height: 100%;
 	justify-content: center;
 	align-items: center;
+`;
+const Spacer = styled.div`
+	display: flex;
+	width: 100%;
+	height: 4rem;
 `;
