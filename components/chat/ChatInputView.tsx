@@ -3,17 +3,27 @@ import styled from 'styled-components';
 import { palette } from 'common/styles';
 
 type Props = {
+	input: string;
+	setInput: React.Dispatch<React.SetStateAction<string>>;
+	disableInput: boolean;
+	setDisableInput: React.Dispatch<React.SetStateAction<boolean>>;
 	handleSubmit: (value: string) => void;
 };
 
-export const ChatInputView: React.FC<Props> = ({ handleSubmit }) => {
-	const [inputValue, setInputValue] = useState<string>('');
+export const ChatInputView: React.FC<Props> = ({
+	input,
+	setInput,
+	disableInput,
+	setDisableInput,
+	handleSubmit,
+}) => {
 	const [height, setHeight] = useState('40px');
 	const [lineHeight, setLineHeight] = useState('40px');
 	const [topPadding, setTopPadding] = useState('0px');
 	const shadowTextareaRef = useRef(null);
 
 	useEffect(() => {
+		// handle height
 		const shadowTextarea = shadowTextareaRef.current;
 		if (!shadowTextarea) return;
 		const { scrollHeight } = shadowTextarea;
@@ -27,27 +37,48 @@ export const ChatInputView: React.FC<Props> = ({ handleSubmit }) => {
 			setHeight('40px');
 			setLineHeight('40px');
 		}
-	}, [inputValue]);
+
+		// handle disableInput
+		if (input.length > 0) {
+			setDisableInput(false);
+		} else {
+			setDisableInput(true);
+		}
+	}, [input]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setInputValue(e.target.value);
+		setInput(e.target.value);
+	};
+
+	const handleKeyDown = (e) => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			handleSubmit(input);
+		}
 	};
 
 	return (
 		<Div>
 			<InteractionContainer>
-				<Input
+				<Textarea
 					placeholder={'질문을 입력하세요'}
 					name="input"
-					value={inputValue}
+					value={input}
 					onChange={(e) => handleChange(e)}
 					height={height}
 					lineHeight={lineHeight}
 					topPadding={topPadding}
+					onKeyDown={handleKeyDown}
 				/>
-				<ShadowTextarea ref={shadowTextareaRef} value={inputValue} readOnly />
-				<SubmitButton onClick={() => handleSubmit(inputValue)}>
-					<Icon src={'/send.svg'} alt="" />
+				<ShadowTextarea ref={shadowTextareaRef} value={input} readOnly />
+				<SubmitButton
+					onClick={() => handleSubmit(input)}
+					disabled={disableInput}
+				>
+					<Icon
+						src={disableInput ? '/send_disabled.svg' : '/send.svg'}
+						alt=""
+					/>
 				</SubmitButton>
 			</InteractionContainer>
 		</Div>
@@ -62,6 +93,7 @@ const Div = styled.div`
 	z-index: 900;
 	left: 0%;
 	bottom: 0;
+	background-color: white;
 
 	border-top: 1px solid #f7f7f9;
 	padding-top: 8px;
@@ -77,7 +109,7 @@ const InteractionContainer = styled.div`
 	margin: 0 8px 0 8px;
 	padding: 0.25rem 0;
 `;
-const Input = styled.textarea<{
+const Textarea = styled.textarea<{
 	height: string;
 	lineHeight: string;
 	topPadding: string;
@@ -111,6 +143,11 @@ const Input = styled.textarea<{
 	font-size: 16px;
 	font-weight: 400;
 	line-height: ${(props) => props.lineHeight};
+
+	&::-webkit-scrollbar {
+		width: 0px; /* Remove scrollbar space */
+		background: transparent; /* Optional: just make scrollbar invisible */
+	}
 `;
 const SubmitButton = styled.button`
 	display: flex;

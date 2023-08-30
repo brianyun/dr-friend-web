@@ -34,9 +34,7 @@ export const phone = () => {
 				isActive={phone.length >= 10}
 				isTriggerBottomsheet={true}
 			/>
-			{isBottomsheetVisible && (
-				<TermsBottomsheet nextButtonDestination="chat" />
-			)}
+			{isBottomsheetVisible && <TermsBottomsheet nextButtonDestination="" />}
 		</Div>
 	);
 };
