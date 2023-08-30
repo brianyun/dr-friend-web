@@ -12,6 +12,7 @@ import {
 import { useRecoilState } from 'recoil';
 import { Message } from 'common/models';
 import { messagesState } from 'recoil/atoms';
+import { API_URL } from 'environment';
 
 const chat = () => {
 	const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
@@ -45,7 +46,59 @@ const chat = () => {
 	}, [messages]);
 
 	const streamResponse = async (input: string, messages: Array<Message>) => {
-		return;
+		try {
+			// 첫 질문은 히스토리에 포함시키지 않는다.
+			// 마지막 유저 질문은 히스토리에 포함시키지 않는다 (어차피 prompt로 포함되어 들어간다).
+			// id, confidence 는 전달하지 않는다.
+			const trimmedMessages = messages
+				.slice(0, -1)
+				// .filter((m) => m.id !== 0)
+				// .filter((m) => m.id !== 1)
+				.map(({ id, role, content }) => ({ role, content }));
+
+			const response = await fetch(`${API_URL}/chat/3.5`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					question: input,
+					messages: JSON.stringify(trimmedMessages),
+				}),
+			});
+
+			if (!response.body) {
+				throw new Error();
+			}
+
+			const reader = response.body
+				.pipeThrough(new TextDecoderStream())
+				.getReader();
+			const newAIMessages: Message[] = [];
+
+			var generatedText = '';
+
+			while (true) {
+				const { value, done } = await reader.read();
+
+				if (done) {
+					break;
+				}
+
+				var data = value.split('MESSAGE: ').splice(1, 1)[0];
+				if (!data) continue;
+
+				generatedText = data;
+				newAIMessages[0] = {
+					role: 'assistant',
+					content: generatedText,
+				} as Message;
+
+				setMessages([...messages, ...newAIMessages]);
+			}
+
+			return generatedText;
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
 	};
 
 	const handleNewChat = useCallback(() => {
