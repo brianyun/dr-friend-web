@@ -6,6 +6,8 @@ export const terms = () => {
 	return <Div>terms</Div>;
 };
 
+export default terms;
+
 const Div = styled.div`
 	display: flex;
 	flex-direction: column;

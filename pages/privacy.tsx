@@ -6,6 +6,8 @@ export const privacy = () => {
 	return <Div>privacy</Div>;
 };
 
+export default privacy;
+
 const Div = styled.div`
 	display: flex;
 	flex-direction: column;
