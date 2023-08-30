@@ -13,27 +13,24 @@ import { useRecoilState } from 'recoil';
 import { Message } from 'common/models';
 import { messagesState } from 'recoil/atoms';
 import { API_URL } from 'environment';
+import { useRouter } from 'next/router';
 
 const chat = () => {
-	const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
+	const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
 	const [messages, setMessages] = useRecoilState<Array<Message>>(messagesState);
 	const containerRef = useRef(null);
 	const [input, setInput] = useState<string>('');
 	const [disableInput, setDisableInput] = useState<boolean>(true);
+	const router = useRouter();
 
 	useEffect(() => {
-		const isOnboarded = localStorage.getItem('isOnboarded');
-		if (isOnboarded) {
-			setShowOnboarding(false);
-		} else {
-			// 디버깅 목적으로 숨김
-			// setShowOnboarding(true);
-			setShowOnboarding(false);
-		}
+		const isChatOnboarded = !!localStorage.getItem('isChatOnboarded');
+		setShowOnboarding(!isChatOnboarded);
 	}, []);
 
 	// scroll to bottom when new message is added
 	useEffect(() => {
+		if (!containerRef.current) return;
 		containerRef.current.scrollTop = containerRef.current.scrollHeight;
 	}, [messages]);
 
@@ -106,6 +103,13 @@ const chat = () => {
 	}, []);
 
 	const handleSubmit = useCallback((value: string) => {
+		//check service onboarding
+		const isServiceOnboarded = localStorage.getItem('isServiceOnboarded');
+		if (!isServiceOnboarded) {
+			alert('회원가입 화면으로 이동합니다');
+			router.push('/onboarding/age');
+		}
+
 		console.log('handleSubmit', value);
 		setInput('');
 		setDisableInput(true);
@@ -117,10 +121,12 @@ const chat = () => {
 		setMessages((msgs) => [...msgs, newUserMessage]);
 	}, []);
 
+	if (showOnboarding === null) return null;
+
 	return (
 		<Div>
 			{showOnboarding && (
-				<ChatOnboarding handleClick={() => setShowOnboarding(false)} />
+				<ChatOnboarding setShowOnboarding={setShowOnboarding} />
 			)}
 			<ChatHeader handleNewChat={handleNewChat} />
 			<Spacer />

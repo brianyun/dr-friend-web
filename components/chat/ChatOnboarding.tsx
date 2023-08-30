@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import { palette } from 'common/styles';
 
 type Props = {
-	handleClick: () => void;
+	setShowOnboarding: (value: boolean) => void;
 };
 
-export const ChatOnboarding: React.FC<Props> = ({ handleClick }) => {
+export const ChatOnboarding: React.FC<Props> = ({ setShowOnboarding }) => {
+	const handleSubmit = () => {
+		setShowOnboarding(false);
+		localStorage.setItem('isChatOnboarded', 'true');
+	};
+
 	return (
 		<Div>
 			<OnboardingContainer>
@@ -33,7 +38,7 @@ export const ChatOnboarding: React.FC<Props> = ({ handleClick }) => {
 					<TimestampText>지금</TimestampText>
 				</TimestampContainer>
 			</OnboardingContainer>
-			<SubmitButton onClick={handleClick}>
+			<SubmitButton onClick={handleSubmit}>
 				<p>시작</p>
 				<img src={'/onboarding_next.svg'} alt="" />
 			</SubmitButton>
@@ -48,6 +53,7 @@ const Div = styled.div`
 	height: 100%;
 	z-index: 1000;
 	position: absolute;
+	background-color: white;
 	top: 0;
 	left: 0;
 `;

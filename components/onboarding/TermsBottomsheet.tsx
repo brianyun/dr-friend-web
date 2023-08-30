@@ -42,6 +42,11 @@ export const TermsBottomsheet: React.FC<Props> = ({
 		window.open(absoluteURL, '_blank');
 	};
 
+	const handleSubmit = () => { 
+		localStorage.setItem('isServiceOnboarded', "true");
+		router.push(`/${nextButtonDestination}`);
+	}
+
 	return (
 		<Div>
 			<LayerContainer onClick={(e) => handleBackgroundClick(e)} />
@@ -99,7 +104,7 @@ export const TermsBottomsheet: React.FC<Props> = ({
 					<ButtonContainer>
 						<OnboardingSubmitButton
 							isActive={isPrivacyChecked && isLocationChecked}
-							onClick={() => router.push(`/${nextButtonDestination}`)}
+							onClick={handleSubmit}
 							disabled={!isPrivacyChecked || !isLocationChecked}
 						>
 							<p>다음</p>

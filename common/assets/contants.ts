@@ -3,6 +3,14 @@ import { Message } from 'common/models';
 export const DEFAULT_MESSAGES = [
 	{
 		id: 0,
+		role: 'assistant',
+		content: '안뇽',
+	} as Message,
+];
+
+export const DEFAULT_ADVANCED_MESSAGES = [
+	{
+		id: 0,
 		role: 'user',
 		content: '안뇽',
 	} as Message,
