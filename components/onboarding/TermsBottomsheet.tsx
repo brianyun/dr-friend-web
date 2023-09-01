@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { isBottomsheetVisibleState } from 'recoil/atoms';
 import { completeServiceOnboarding } from 'utils';
+import { API_URL } from 'environment';
 
 type Props = {
 	nextButtonDestination?: string;
@@ -43,10 +44,35 @@ export const TermsBottomsheet: React.FC<Props> = ({
 		window.open(absoluteURL, '_blank');
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		localStorage.setItem('isServiceOnboarded', 'true');
+		await signUp();
 		completeServiceOnboarding();
 		router.push(`/${nextButtonDestination}`);
+	};
+
+	const signUp = async () => {
+		const gender = localStorage.getItem('gender');
+		const birthday = localStorage.getItem('birthday');
+		const phone = localStorage.getItem('phone');
+
+		const response = await fetch(`${API_URL}/sign-up/temp`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				gender: gender,
+				birthday: birthday,
+				phone: phone,
+			}),
+		});
+
+		const responseBody = await response.json();
+		const userId = responseBody.userId || '';
+		localStorage.setItem('userId', userId);
+
+		localStorage.removeItem('gender');
+		localStorage.removeItem('birthday');
+		localStorage.removeItem('phone');
 	};
 
 	return (

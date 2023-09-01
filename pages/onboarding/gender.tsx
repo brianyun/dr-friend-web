@@ -45,9 +45,12 @@ export const gender = () => {
 				isSkipVisible={false}
 				isActive={gender !== ''}
 				nextButtonDestination="onboarding/age"
-				customHandleSubmit={(skip) =>
-					skip ? selectOnboardingGender('skip') : selectOnboardingGender(gender)
-				}
+				customHandleSubmit={(skip) => {
+					localStorage.setItem('gender', gender);
+					skip
+						? selectOnboardingGender('skip')
+						: selectOnboardingGender(gender);
+				}}
 			/>
 		</Div>
 	);

@@ -46,11 +46,12 @@ export const age = () => {
 				isSkipVisible={true}
 				isActive={activated}
 				nextButtonDestination="onboarding/phone"
-				customHandleSubmit={(skip) =>
+				customHandleSubmit={(skip) => {
+					localStorage.setItem('birthday', `${year}-${month}-${date}`);
 					skip
 						? selectOnboardingBirthday('skip')
-						: selectOnboardingBirthday(`${year}-${month}-${date}`)
-				}
+						: selectOnboardingBirthday(`${year}-${month}-${date}`);
+				}}
 			/>
 		</Div>
 	);

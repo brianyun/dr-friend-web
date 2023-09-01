@@ -34,9 +34,10 @@ export const phone = () => {
 				isSkipVisible={true}
 				isActive={phone.length >= 10}
 				isTriggerBottomsheet={true}
-				customHandleSubmit={(skip) =>
-					skip ? selectOnboardingPhone('skip') : selectOnboardingPhone(phone)
-				}
+				customHandleSubmit={(skip) => {
+					localStorage.setItem('phone', phone);
+					skip ? selectOnboardingPhone('skip') : selectOnboardingPhone(phone);
+				}}
 			/>
 			{isBottomsheetVisible && <TermsBottomsheet nextButtonDestination="" />}
 		</Div>

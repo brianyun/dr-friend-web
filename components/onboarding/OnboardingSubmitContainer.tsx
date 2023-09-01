@@ -26,10 +26,10 @@ export const OnboardingSubmitContainer: React.FC<Props> = ({
 	);
 
 	const handleNext = (skip: boolean) => {
+		customHandleSubmit(skip);
 		if (isTriggerBottomsheet) {
 			setIsBottomsheetVisible(true);
 		} else {
-			customHandleSubmit(skip);
 			router.push(`/${nextButtonDestination}`);
 		}
 	};
