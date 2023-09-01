@@ -15,6 +15,13 @@ export const DEFAULT_MESSAGES = [
 		id: 2,
 		role: 'assistant',
 		content: '안뇽',
+		timestamp: '10:48 PM',
+	} as Message,
+	{
+		id: 2,
+		role: 'user',
+		content: '안뇽',
+		timestamp: '10:49 PM',
 	} as Message,
 ];
 

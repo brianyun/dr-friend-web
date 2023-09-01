@@ -133,9 +133,21 @@ const chat = () => {
 			<MessageContainer ref={containerRef}>
 				{messages.map((msg, index) => {
 					if (msg.role === 'assistant') {
-						return <AIMessage key={`ai-${index}`} text={msg.content} />;
+						return (
+							<AIMessage
+								key={`ai-${index}`}
+								text={msg.content}
+								timestamp={msg.timestamp || undefined}
+							/>
+						);
 					} else if (msg.role === 'user') {
-						return <UserMessage key={`user-${index}`} text={msg.content} />;
+						return (
+							<UserMessage
+								key={`user-${index}`}
+								text={msg.content}
+								timestamp={msg.timestamp || undefined}
+							/>
+						);
 					} else if (msg.role === 'welcome') {
 						return (
 							<CenteredMessage
