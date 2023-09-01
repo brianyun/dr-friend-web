@@ -17,12 +17,6 @@ export const DEFAULT_MESSAGES = [
 		content: '안뇽',
 		timestamp: '10:48 PM',
 	} as Message,
-	{
-		id: 2,
-		role: 'user',
-		content: '안뇽',
-		timestamp: '10:49 PM',
-	} as Message,
 ];
 
 export const DEFAULT_ADVANCED_MESSAGES = [

@@ -41,9 +41,44 @@ const chat = () => {
 		// 마지막 메세지가 user 이면 streamResponse 호출
 		if (messages.length > 1 && messages[messages.length - 1].role === 'user') {
 			const input = messages[messages.length - 1].content;
-			streamResponse(input, messages);
+			// streamResponse(input, messages);
+			// sseResponse(input, messages);
 		}
 	}, [messages]);
+
+	useEffect(() => {}, []);
+
+	let eventSource: EventSource;
+
+	const sseResponse = async (input: string, messages: Array<Message>) => {
+		try {
+			const userId = localStorage.getItem('userId') || '';
+
+			eventSource = new EventSource(
+				`${API_URL}/completions?question=${input}&userId=${userId}`
+			);
+
+			/* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
+			eventSource.onmessage = async (event) => {
+				const message = await event.data;
+				const newAIMessages: Message[] = [];
+				var generatedText = '';
+				generatedText = message;
+
+				newAIMessages[0] = {
+					role: 'assistant',
+					content: generatedText,
+				} as Message;
+
+				setMessages([...messages, ...newAIMessages]);
+			};
+
+			/* EVENTSOURCE ONERROR ------------------------------------------------------ */
+			eventSource.onerror = async (event: any) => {
+				eventSource.close();
+			};
+		} catch (error) {}
+	};
 
 	const streamResponse = async (input: string, messages: Array<Message>) => {
 		try {
@@ -56,14 +91,15 @@ const chat = () => {
 				// .filter((m) => m.id !== 1)
 				.map(({ id, role, content }) => ({ role, content }));
 
-			const response = await fetch(`${API_URL}/chat/3.5`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					question: input,
-					messages: JSON.stringify(trimmedMessages),
-				}),
-			});
+			const userId = localStorage.getItem('userId') || '';
+
+			const response = await fetch(
+				`${API_URL}/completions?question=${input}&userId=${userId}`,
+				{
+					method: 'GET',
+					headers: { 'Content-Type': 'application/json' },
+				}
+			);
 
 			if (!response.body) {
 				throw new Error();
