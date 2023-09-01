@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { palette } from 'common/styles';
 import { useRouter } from 'next/router';
+import { clickNewChat, clickUserProfile } from 'utils';
 
 type Props = {
 	handleNewChat: () => void;
@@ -13,10 +14,12 @@ export const ChatHeader: React.FC<Props> = ({ handleNewChat }) => {
 
 	const handleClickProfile = () => {
 		setShowEllipsis(false);
+		clickUserProfile();
 		router.push('/profile');
 	};
 	const handleClickNewChat = () => {
 		setShowEllipsis(false);
+		clickNewChat();
 		handleNewChat();
 	};
 

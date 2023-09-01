@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { palette } from 'common/styles';
+import { completeChatOnboarding } from 'utils';
 
 type Props = {
 	setShowOnboarding: (value: boolean) => void;
@@ -10,6 +11,7 @@ export const ChatOnboarding: React.FC<Props> = ({ setShowOnboarding }) => {
 	const handleSubmit = () => {
 		setShowOnboarding(false);
 		localStorage.setItem('isChatOnboarded', 'true');
+		completeChatOnboarding();
 	};
 
 	return (

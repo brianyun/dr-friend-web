@@ -4,6 +4,7 @@ import { palette } from 'common/styles';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { isBottomsheetVisibleState } from 'recoil/atoms';
+import { completeServiceOnboarding } from 'utils';
 
 type Props = {
 	nextButtonDestination?: string;
@@ -42,10 +43,11 @@ export const TermsBottomsheet: React.FC<Props> = ({
 		window.open(absoluteURL, '_blank');
 	};
 
-	const handleSubmit = () => { 
-		localStorage.setItem('isServiceOnboarded', "true");
+	const handleSubmit = () => {
+		localStorage.setItem('isServiceOnboarded', 'true');
+		completeServiceOnboarding();
 		router.push(`/${nextButtonDestination}`);
-	}
+	};
 
 	return (
 		<Div>

@@ -11,6 +11,7 @@ import {
 } from 'components/onboarding';
 import { useRecoilState } from 'recoil';
 import { isBottomsheetVisibleState } from 'recoil/atoms';
+import { selectOnboardingPhone } from 'utils';
 
 export const phone = () => {
 	const [phone, setPhone] = useState<string>('');
@@ -33,6 +34,9 @@ export const phone = () => {
 				isSkipVisible={true}
 				isActive={phone.length >= 10}
 				isTriggerBottomsheet={true}
+				customHandleSubmit={(skip) =>
+					skip ? selectOnboardingPhone('skip') : selectOnboardingPhone(phone)
+				}
 			/>
 			{isBottomsheetVisible && <TermsBottomsheet nextButtonDestination="" />}
 		</Div>

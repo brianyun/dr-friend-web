@@ -10,6 +10,7 @@ type Props = {
 	isActive?: boolean;
 	nextButtonDestination?: string;
 	isTriggerBottomsheet?: boolean;
+	customHandleSubmit?: (skip: boolean) => void;
 };
 
 export const OnboardingSubmitContainer: React.FC<Props> = ({
@@ -17,16 +18,18 @@ export const OnboardingSubmitContainer: React.FC<Props> = ({
 	isActive,
 	nextButtonDestination,
 	isTriggerBottomsheet = false,
+	customHandleSubmit,
 }) => {
 	const router = useRouter();
 	const [isBottomsheetVisible, setIsBottomsheetVisible] = useRecoilState(
 		isBottomsheetVisibleState
 	);
 
-	const handleNext = () => {
+	const handleNext = (skip: boolean) => {
 		if (isTriggerBottomsheet) {
 			setIsBottomsheetVisible(true);
 		} else {
+			customHandleSubmit(skip);
 			router.push(`/${nextButtonDestination}`);
 		}
 	};
@@ -35,14 +38,17 @@ export const OnboardingSubmitContainer: React.FC<Props> = ({
 		<Div>
 			<OnboardingSubmitButton
 				isActive={isActive}
-				onClick={handleNext}
+				onClick={() => handleNext(false)}
 				disabled={!isActive}
 			>
 				<p>다음</p>
 				<img src={'/onboarding_next.svg'} alt="" />
 			</OnboardingSubmitButton>
 			<SkipButtonContainer>
-				<SkipButton isSkipVisible={isSkipVisible} onClick={handleNext}>
+				<SkipButton
+					isSkipVisible={isSkipVisible}
+					onClick={() => handleNext(true)}
+				>
 					건너뛰기
 				</SkipButton>
 			</SkipButtonContainer>

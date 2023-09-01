@@ -14,6 +14,7 @@ import { Message } from 'common/models';
 import { messagesState } from 'recoil/atoms';
 import { API_URL } from 'environment';
 import { useRouter } from 'next/router';
+import { startServiceOnboarding, submitUserMessage, viewHome } from 'utils';
 
 const chat = () => {
 	const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
@@ -24,6 +25,8 @@ const chat = () => {
 	const router = useRouter();
 
 	useEffect(() => {
+		viewHome();
+
 		const isChatOnboarded = !!localStorage.getItem('isChatOnboarded');
 		setShowOnboarding(!isChatOnboarded);
 	}, []);
@@ -107,6 +110,7 @@ const chat = () => {
 		const isServiceOnboarded = localStorage.getItem('isServiceOnboarded');
 		if (!isServiceOnboarded) {
 			alert('회원가입 화면으로 이동합니다');
+			startServiceOnboarding();
 			router.push('/onboarding/age');
 		}
 
@@ -119,6 +123,7 @@ const chat = () => {
 			content: value,
 		} as Message;
 		setMessages((msgs) => [...msgs, newUserMessage]);
+		submitUserMessage(value);
 	}, []);
 
 	if (showOnboarding === null) return null;

@@ -8,6 +8,7 @@ import {
 	OnboardingTitleContainer,
 	DatePicker,
 } from 'components/onboarding';
+import { selectOnboardingBirthday } from 'utils';
 
 export const age = () => {
 	const [year, setYear] = useState<string>('');
@@ -45,6 +46,11 @@ export const age = () => {
 				isSkipVisible={true}
 				isActive={activated}
 				nextButtonDestination="onboarding/phone"
+				customHandleSubmit={(skip) =>
+					skip
+						? selectOnboardingBirthday('skip')
+						: selectOnboardingBirthday(`${year}-${month}-${date}`)
+				}
 			/>
 		</Div>
 	);

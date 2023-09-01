@@ -7,6 +7,7 @@ import {
 	OnboardingSubmitContainer,
 	OnboardingTitleContainer,
 } from 'components/onboarding';
+import { selectOnboardingGender } from 'utils';
 
 export const gender = () => {
 	const [gender, setGender] = useState<string>('');
@@ -44,6 +45,9 @@ export const gender = () => {
 				isSkipVisible={false}
 				isActive={gender !== ''}
 				nextButtonDestination="onboarding/age"
+				customHandleSubmit={(skip) =>
+					skip ? selectOnboardingGender('skip') : selectOnboardingGender(gender)
+				}
 			/>
 		</Div>
 	);
