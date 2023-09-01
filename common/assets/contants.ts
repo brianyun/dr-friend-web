@@ -3,6 +3,16 @@ import { Message } from 'common/models';
 export const DEFAULT_MESSAGES = [
 	{
 		id: 0,
+		role: 'welcome',
+		content: `닥터 스트레인지와 강은빈님이 친구가 되었습니다.\n인사와 함께 궁금했던 것들에 대해 질문해보세요 ✋🏻`,
+	} as Message,
+	{
+		id: 1,
+		role: 'date',
+		content: '오늘',
+	} as Message,
+	{
+		id: 2,
 		role: 'assistant',
 		content: '안뇽',
 	} as Message,

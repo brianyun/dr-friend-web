@@ -6,7 +6,7 @@ import {
 	ChatHeader,
 	ChatInputView,
 	ChatOnboarding,
-	DefaultGreetingMessage,
+	CenteredMessage,
 	UserMessage,
 } from 'components/chat';
 import { useRecoilState } from 'recoil';
@@ -130,18 +130,31 @@ const chat = () => {
 			)}
 			<ChatHeader handleNewChat={handleNewChat} />
 			<Spacer />
-			<DefaultGreetingMessage />
 			<MessageContainer ref={containerRef}>
-				{messages.map((msg, index) =>
-					msg.role === 'assistant' ? (
-						<AIMessage key={`ai-${index}-${msg.content}`} text={msg.content} />
-					) : (
-						<UserMessage
-							key={`user-${index}-${msg.content}`}
-							text={msg.content}
-						/>
-					)
-				)}
+				{messages.map((msg, index) => {
+					if (msg.role === 'assistant') {
+						return <AIMessage key={`ai-${index}`} text={msg.content} />;
+					} else if (msg.role === 'user') {
+						return <UserMessage key={`user-${index}`} text={msg.content} />;
+					} else if (msg.role === 'welcome') {
+						return (
+							<CenteredMessage
+								key={`welcome-${index}`}
+								isGray={true}
+								text={msg.content}
+							/>
+						);
+					} else if (msg.role === 'date') {
+						return (
+							<CenteredMessage
+								key={`date-${index}`}
+								isGray={false}
+								text={msg.content}
+							/>
+						);
+					}
+					return null; // or some default rendering
+				})}
 			</MessageContainer>
 			<ChatInputView
 				input={input}
