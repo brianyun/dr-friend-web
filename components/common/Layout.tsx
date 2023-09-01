@@ -20,6 +20,7 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	background-color: #fafafa;
 	height: 100vh;
+	height: var(--doc-height);
 	width: 100vw;
 
 	overflow-x: hidden;

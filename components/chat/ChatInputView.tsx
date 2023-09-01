@@ -96,8 +96,8 @@ const Div = styled.div`
 	background-color: white;
 
 	border-top: 1px solid #f7f7f9;
-	padding-top: 8px;
-	padding-bottom: 3rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
 `;
 const InteractionContainer = styled.div`
 	display: flex;
