@@ -15,6 +15,7 @@ import { messagesState } from 'recoil/atoms';
 import { API_URL } from 'environment';
 import { useRouter } from 'next/router';
 import { startServiceOnboarding, submitUserMessage, viewHome } from 'utils';
+import { DEFAULT_STATIC_MESSAGES } from 'common/assets/contants';
 
 const chat = () => {
 	const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
@@ -41,10 +42,43 @@ const chat = () => {
 		// 마지막 메세지가 user 이면 streamResponse 호출
 		if (messages.length > 1 && messages[messages.length - 1].role === 'user') {
 			const input = messages[messages.length - 1].content;
+
+			const isServiceOnboarded = localStorage.getItem('isServiceOnboarded');
+			if (!isServiceOnboarded) return;
+			addStaticMessage(messages.length - 4);
 			// streamResponse(input, messages);
 			// sseResponse(input, messages);
 		}
 	}, [messages]);
+
+	const addStaticMessage = (index: number) => {
+		const sample = '스포츠 어깨 탈구 수술 잘하는 병원 추천해주세요';
+		const staticMessage = DEFAULT_STATIC_MESSAGES[index];
+
+		const newAIMessages: Message[] = [];
+
+		if (staticMessage.role == 'user') {
+			return;
+		} else {
+			let index = 0;
+
+			function writeNextLetter() {
+				if (index < staticMessage.content.length) {
+					newAIMessages[0] = {
+						role: staticMessage.role,
+						content: staticMessage.content.slice(0, index + 1),
+					} as Message;
+					setMessages([...messages, ...newAIMessages]);
+					index++;
+					setTimeout(writeNextLetter, 50); // Adjust the delay time as needed (in milliseconds)
+				} else {
+					return;
+				}
+			}
+
+			writeNextLetter();
+		}
+	};
 
 	useEffect(() => {}, []);
 
@@ -147,7 +181,7 @@ const chat = () => {
 		if (!isServiceOnboarded) {
 			alert('회원가입 화면으로 이동합니다');
 			startServiceOnboarding();
-			router.push('/onboarding/age');
+			router.push('/onboarding/gender');
 		}
 
 		console.log('handleSubmit', value);

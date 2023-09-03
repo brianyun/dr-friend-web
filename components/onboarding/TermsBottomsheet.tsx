@@ -56,19 +56,19 @@ export const TermsBottomsheet: React.FC<Props> = ({
 		const birthday = localStorage.getItem('birthday');
 		const phone = localStorage.getItem('phone');
 
-		const response = await fetch(`${API_URL}/sign-up/temp`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				gender: gender,
-				birthday: birthday,
-				phone: phone,
-			}),
-		});
+		// const response = await fetch(`${API_URL}/sign-up/temp`, {
+		// 	method: 'POST',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify({
+		// 		gender: gender,
+		// 		birthday: birthday,
+		// 		phone: phone,
+		// 	}),
+		// });
 
-		const responseBody = await response.json();
-		const userId = responseBody.userId || '';
-		localStorage.setItem('userId', userId);
+		// const responseBody = await response.json();
+		// const userId = responseBody.userId || '';
+		// localStorage.setItem('userId', userId);
 
 		localStorage.removeItem('gender');
 		localStorage.removeItem('birthday');
