@@ -15,7 +15,6 @@ import { messagesState } from 'recoil/atoms';
 import { API_URL } from 'environment';
 import { useRouter } from 'next/router';
 import { startServiceOnboarding, submitUserMessage, viewHome } from 'utils';
-import { DEFAULT_STATIC_MESSAGES } from 'common/assets/contants';
 
 const chat = () => {
 	const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
@@ -45,42 +44,11 @@ const chat = () => {
 
 			const isServiceOnboarded = localStorage.getItem('isServiceOnboarded');
 			if (!isServiceOnboarded) return;
-			addStaticMessage(messages.length - 4);
+			alert('서비스 업데이트 중입니다.');
 			// streamResponse(input, messages);
 			// sseResponse(input, messages);
 		}
 	}, [messages]);
-
-	const addStaticMessage = (index: number) => {
-		const sample = '스포츠 어깨 탈구 수술 잘하는 병원 추천해주세요';
-		const staticMessage = DEFAULT_STATIC_MESSAGES[index];
-
-		const newAIMessages: Message[] = [];
-
-		if (staticMessage.role == 'user') {
-			return;
-		} else {
-			let index = 0;
-
-			function writeNextLetter() {
-				if (index < staticMessage.content.length) {
-					newAIMessages[0] = {
-						role: staticMessage.role,
-						content: staticMessage.content.slice(0, index + 1),
-					} as Message;
-					setMessages([...messages, ...newAIMessages]);
-					index++;
-					setTimeout(writeNextLetter, 50); // Adjust the delay time as needed (in milliseconds)
-				} else {
-					return;
-				}
-			}
-
-			writeNextLetter();
-		}
-	};
-
-	useEffect(() => {}, []);
 
 	let eventSource: EventSource;
 
